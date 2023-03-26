@@ -4,9 +4,17 @@ class ElementsController < ApplicationController
   before_action :set_element, only: [:show, :update, :destroy]
 
   def index
-    @elements = Element.all
-
-    render json: @elements
+    keys = $redis.keys('element_*')
+    begin
+      results = $redis.mget(keys)
+      if results.present?
+        return render json: {element: results.sort }
+      else
+        return render json: {error: "Could not find element."}
+      end
+      rescue Redis::CommandError => e
+        return render json: {error: "Unable to retrieve element list."}
+    end
   end
 
   def show
