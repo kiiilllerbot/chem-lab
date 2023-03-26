@@ -36,5 +36,20 @@ module ChemLab
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    # Set Redis as the default cache store
+    config.cache_store = :redis_cache_store, {
+      url: ENV['REDIS_URL'],
+      namespace: 'cache'
+    }
+
+    # Set Redis as the default session store
+    config.session_store :redis_store, {
+      servers: "#{ENV['REDIS_URL']}/0/session",
+      expire_after: 90.minutes,
+      key: '_myapp_session',
+      threadsafe: false,
+      secure: Rails.env.production?
+    }
   end
 end
