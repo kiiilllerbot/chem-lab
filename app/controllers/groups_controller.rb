@@ -4,9 +4,17 @@ class GroupsController < ApplicationController
   before_action :set_group, only: [:show, :update, :destroy]
 
   def index
-    @groups = Group.all
-
-    render json: @groups
+    keys = $redis.keys('group_*')
+    begin
+      results = $redis.mget(keys)
+      if results.present?
+        return render json: {group: results.sort }
+      else
+        return render json: {error: "Could not find group."}
+      end
+      rescue Redis::CommandError => e
+        return render json: {error: "Unable to retrieve group list."}
+    end
   end
 
   def show

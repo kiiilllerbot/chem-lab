@@ -9,7 +9,7 @@ gem 'puma', '~> 5.0'
 gem 'bootsnap', '>= 1.4.4', require: false
 gem 'rack-cors'
 gem 'devise_token_auth', '~> 1.2', '>= 1.2.1'
-gem 'redis-rails'
+gem 'redis'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
