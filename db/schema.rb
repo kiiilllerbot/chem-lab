@@ -10,7 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_03_26_015403) do
+ActiveRecord::Schema.define(version: 2023_03_26_032227) do
+
+  create_table "elements", force: :cascade do |t|
+    t.string "name"
+    t.integer "atomic_number"
+    t.decimal "atomic_mass"
+    t.string "symbol"
+    t.text "description"
+    t.integer "group_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["group_id"], name: "index_elements_on_group_id"
+  end
 
   create_table "groups", force: :cascade do |t|
     t.string "name"
@@ -41,4 +53,5 @@ ActiveRecord::Schema.define(version: 2023_03_26_015403) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  add_foreign_key "elements", "groups"
 end
